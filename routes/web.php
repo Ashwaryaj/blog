@@ -10,7 +10,6 @@ Route::get('/register','RegistrationController@create');
 Route::post('/register','RegistrationController@store');
 
 
-
 //Auth::routes();
 
 //Route::get('/home', 'HomeController@index');

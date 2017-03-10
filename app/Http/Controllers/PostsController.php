@@ -24,7 +24,7 @@ class PostsController extends Controller
     //Render posts
     public function index()
     {
-        $posts=Post::latest()->get() ;
+        $posts=Post::latest()->paginate() ;
         return view('posts.index',compact('posts'));
     }
     //Display a post
