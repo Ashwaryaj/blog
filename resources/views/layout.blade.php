@@ -19,6 +19,13 @@
 
   <body>
     @include('layouts.nav')
+    @if (session('alert'))
+    <div class="alert alert-success">
+      <div class="message">
+        {{ session('alert') }}
+      </div>
+    </div>
+    @endif
     <div class="container">
       @include('layouts.header')
     </div>

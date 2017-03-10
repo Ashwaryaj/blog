@@ -43,6 +43,6 @@ class PostsController extends Controller
         auth()->user()->publish(
             new Post(request(['title','body']))
         );
-    	return redirect('/');
+    	return redirect('/')->with('alert',"Post created successfully.");;
     }
 }

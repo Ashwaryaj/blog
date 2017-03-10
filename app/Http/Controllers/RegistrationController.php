@@ -31,6 +31,6 @@ class RegistrationController extends Controller
         //Login
     	auth()->login($user);
         //Redirect to home page
-    	return redirect('/');
+    	return redirect('/')->with('alert','Thanks for signing up');;
     }
 }

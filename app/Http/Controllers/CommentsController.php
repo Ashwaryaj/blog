@@ -12,7 +12,7 @@ class CommentsController extends Controller
 
     	$this->validate(request(), ['body' => 'required|min:3']);
 		$post->addComment(request('body'));
-		return back();
+		return back()->with('alert', 'Comment added');;
 
     }
 }
