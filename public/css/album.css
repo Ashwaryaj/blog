@@ -1,3 +1,10 @@
+    #publish,
+    #draft {
+        float: left;
+        width: 50%;
+    background:#dbdbdb;
+    }
+    </style>
 .message{
   margin-left:1%;
 }

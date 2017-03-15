@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','confirmation_code'
     ];
 
     /**
@@ -37,5 +37,25 @@ class User extends Authenticatable
     public function publish(Post $post){
 
         $this->posts()->save($post);
+    } 
+/**
+*
+* Send a verification email with link
+*
+* @return void
+*/
+    public function sendVerificationEmail()
+    {
+      
+    //optionally check if the user has a verification code here
+     
+       Mail::send('email.userverification',
+         ['verification_code' => $this->verification_code],
+         function ($message) {
+             $message->to($this->email)
+               ->subject('Please verify your email');
+             return true;
+         });
+     
     }
 }

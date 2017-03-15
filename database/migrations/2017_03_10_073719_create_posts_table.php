@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
                   ->unsigned();
             $table->string('title');
             $table->string('body');
+            $table->enum('status', ['draft', 'published']);
             $table->foreign('user_id')
                   ->references('id')->on('users')
                   ->onDelete('cascade')
