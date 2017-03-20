@@ -9,16 +9,20 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
-
     <title>Create blog</title>
-
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- Custom styles for this template -->
     <link href="/css/album.css" rel="stylesheet">
+
   </head>
 
   <body>
     @include('layouts.nav')
+    <!-- will be used to show any messages -->
+    @if (Session::has('message'))
+        <div class="alert alert-info">{{ Session::get('message') }}</div>
+    @endif
     @if (session('alert'))
     <div class="alert alert-success">
       <div class="message">
@@ -33,5 +37,6 @@
       @yield('content')
     </div><!-- /.container -->
     @include('layouts.footer')
+    <script type="text/javascript" src="/js/ConfirmDelete.js">  </script>
   </body>
 </html>

@@ -15,10 +15,10 @@
 		    <textarea name="body" id="body" class="form-control" ></textarea>
 		  </div>
 		  <div class="form-group">
-		  	<button type="submit" class="btn btn-primary" value="publish">Publish</button>
+		  	<button type="submit" class="btn btn-primary" name="status" value="published">Publish</button>
 		  </div>
 		  <div class="form-group">
-		  	<button type="submit" class="btn btn-primary" value="draft">Draft</button>
+		  	<button type="submit" class="btn btn-primary" name="status" value="draft">Draft</button>
 		  </div>
 		  <div>
 		    @include('layouts.errors')

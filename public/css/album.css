@@ -1,9 +1,9 @@
-    #publish,
-    #draft {
-        float: left;
-        width: 50%;
+#publish,
+#draft {
+    float: left;
+    width: 50%;
     background:#dbdbdb;
-    }
+}
     </style>
 .message{
   margin-left:1%;
@@ -170,4 +170,10 @@ h6, .h6 {
 }
 .blog-footer p:last-child {
   margin-bottom: 0;
+}
+textarea.form-control{
+  height: 200px;
+}
+#comment{
+  height: 70px;
 }

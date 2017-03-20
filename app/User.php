@@ -7,6 +7,15 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Post;
+use Illuminate\Mail\Mailer;
+use App\Http\Requests;
+
+use App\Http\Controllers\Controller;
+
+
+use Mail;
+use Illuminate\Support\Facades\Input;
+
 
 class User extends Authenticatable
 {
@@ -38,6 +47,7 @@ class User extends Authenticatable
 
         $this->posts()->save($post);
     } 
+
 /**
 *
 * Send a verification email with link
@@ -49,8 +59,8 @@ class User extends Authenticatable
       
     //optionally check if the user has a verification code here
      
-       Mail::send('email.userverification',
-         ['verification_code' => $this->verification_code],
+       Mail::send('mail.verify',
+         ['confirmation_code' => $this->confirmation_code],
          function ($message) {
              $message->to($this->email)
                ->subject('Please verify your email');

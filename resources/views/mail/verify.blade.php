@@ -7,9 +7,9 @@
         <h2>Verify Your Email Address</h2>
 
         <div>
-            Thanks for creating an account with the verification demo app.
+            Thanks for creating an account with us.
             Please follow the link below to verify your email address
-            {{ url(‘user/verifyemail/{{ $verification_code }}’) }}.<br/>
+           <a>{{ URL::to('user/verify/' . $confirmation_code) }}</a><br/>
 
         </div>
 
