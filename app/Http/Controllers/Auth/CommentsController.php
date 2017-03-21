@@ -11,10 +11,10 @@ use App\Comment;
 
 class CommentsController extends Controller
 {	//Create a comment
-    public function store(Post $post_id){
-
+    public function store(Post $post){
+    	
     	$this->validate(request(), ['body' => 'required|min:3']);
-		$post_id->addComment(request('body'));
+		$post->addComment(request('body'));
 		return back()->with('alert', 'Comment added');
     }
 }

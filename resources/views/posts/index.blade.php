@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Input;
 			@foreach ($posts as $post)
 			  	@include('posts.post')
 			  	@if (Auth::check())
-			  		
 			  		<form  method="POST" action="/posts/{{$post->id}}" class="has-confirm" data-message="Delete this post?">
 			  			{{method_field('DELETE')}} 
 			  			{{csrf_field()}}
-			  			<a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Edit Post</a>
-						<button type="submit" class="btn btn-danger">Delete</button>
+			  			@if($post->user_id==Auth::id())
+				  			<a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Edit Post</a>
+							<button type="submit" class="btn btn-danger">Delete</button>
+						@endif
 					</form>  	
 			  	@endif
 			  	<hr>

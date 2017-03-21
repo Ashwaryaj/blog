@@ -28,14 +28,7 @@ class HomeController extends Controller
     //Render posts
     public function index()
     {
-        if(Auth::check()){
-            $posts=auth()->user()->posts()->latest()->paginate(10);
-
-        }
-        else{
-            $posts=Post::where('status','published')->latest()->paginate(10) ;
-        }
-
+        $posts=Post::where('status','published')->latest()->paginate(10); 
         return view('posts.index',compact('posts'));
     }
     //Display a post

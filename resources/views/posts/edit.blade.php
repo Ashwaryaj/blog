@@ -16,11 +16,11 @@
 		    <label for="body">Body</label>
 		    <textarea name="body" id="body" class="form-control" >{{$post->body}}</textarea>
 		  </div>
-		  <div class="form-group">
-		  	<button type="submit" class="btn btn-primary" name="status" value="published">Publish</button>
-		  </div>
-		  <div class="form-group">
-		  	<button  type="submit" class="btn btn-primary" name="status" value="draft">Draft</button>
+		  <div>
+			  <div class="form-group">
+			  	<button type="submit" class="btn btn-primary" name="status" value="published">Publish</button>
+			  	<button  type="submit" class="btn btn-primary" name="status" value="draft">Draft</button>
+			  </div>
 		  </div>
 		  <div class="form-group">
 		  	 <a href="{{ route('posts.index') }}">Go back to all posts</a>
@@ -30,6 +30,4 @@
 		  </div>	
 		</form>		
 	</div>
-
-
 @endsection

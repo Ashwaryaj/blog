@@ -1,3 +1,6 @@
+<?php
+use App\User;
+?>
 @extends('layout')
 @section('content')
 	<div class="col-sm-8 blog-main">
@@ -12,6 +15,13 @@
 						<strong>
 							{{ $comment->created_at->diffForHumans() }}
 						</strong>
+						by
+						<?php
+						$user=User::select('name')->where('id',$comment->user_id )->first();
+						?>
+						<i>
+							{{ $user['name'] }}
+						</i>	
 						{{ $comment->body }}
 					</li>
 				@endforeach
@@ -19,6 +29,7 @@
 		</div>
 		<hr>
 		<!-- A place to add comments -->
+		@if (Auth::check())
 			<div class="card">
 				<div class="card-block">
 					<form method="POST" action="/posts/{{ $post->id }}/comments">
@@ -32,5 +43,6 @@
 					</form>
 				</div>
 			</div>
+		@endif
 	</div>
 @endsection

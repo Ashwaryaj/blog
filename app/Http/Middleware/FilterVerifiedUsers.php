@@ -19,7 +19,6 @@ class FilterVerifiedUsers
     public function handle($request, Closure $next)
     {
        $user = Auth::user();
-
        if (!$user->verified) {
            $user->sendVerificationEmail();
            return redirect('/verifyemail')->withErrors(['Account is not yet verified']);
