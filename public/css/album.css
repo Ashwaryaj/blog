@@ -9,6 +9,18 @@
   margin-left:1%;
 }
 
+.label-primary{
+  margin-right: 5px;
+}
+
+#all-tags{
+  padding-left: initial;
+}
+
+a.show-tags{
+  color:white;
+}
+
 body {
   font-family: Georgia, "Times New Roman", Times, serif;
   color: #555;

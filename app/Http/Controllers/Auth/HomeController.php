@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Session;
 use App\User;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use DB;
 
 
 class HomeController extends Controller
@@ -28,38 +30,45 @@ class HomeController extends Controller
     //Render posts
     public function index()
     {
-        $posts=Post::where('status','published')->latest()->paginate(10); 
+        $posts=Post::where('status','published')
+            ->filter(request(['month','year']))
+            ->latest()
+            ->paginate(10);
+
+        $archives=Post::archives();
         return view('posts.index',compact('posts'));
     }
     //Display a post
-    public function show(Post $post)
-    {
+    public function show($slug)
+    {   
+        $post = Post::where('slug', $slug)->firstOrFail();
         return view('posts.show',compact('post'));
     }
     //Store post in database
-    public function store()
-    {
-        $this->validate(request(),[
+    public function store(Request $request)
+    {   
+        $this->validate($request,[
             'title'=> 'required',
             'body'=>'required'
         ]);
 
         auth()->user()->publish(
-            new Post(request()->all())
-        );
-        return redirect('/')->with('alert',"Post created successfully.");;
+            new Post($request->except('tags','hidden-tags'))
+        );  
+        $id=DB::table('posts')->orderBy('id', 'desc')->first()->id;
+        app('App\Http\Controllers\Auth\TagsController')->saveTags($request,$id);
+        return redirect('/')->with('alert',"Post created successfully.");
     }
 
-    public function edit($id){
+    public function edit($slug){
         // get the post
-        $post = Post::find($id);
-
+        $post = Post::where('slug', $slug)->firstOrFail();
         // show the edit form and pass the post
         return View::make('posts.edit')
             ->with('post', $post);        
     }
 
-    public function update($id){
+    public function update($slug){
         
         // validate
         $rules = array(
@@ -76,7 +85,7 @@ class HomeController extends Controller
                 ->withErrors($validator);
         } else {
             // store
-            $post = Post::find($id);
+            $post = Post::where('slug', $slug)->firstOrFail();
             $post->title = Input::get('title');
             $post->body = Input::get('body');
             $post->status=Input::get('status');
@@ -88,9 +97,9 @@ class HomeController extends Controller
         }
     }
 
-    public function destroy($id){
+    public function destroy($slug){
         // delete
-        $post = Post::find($id);
+        $post = Post::where('slug', $slug)->firstOrFail();
         $post->delete();
         Session::flash('message', 'Successfully deleted the post!');
         return Redirect::to('/');

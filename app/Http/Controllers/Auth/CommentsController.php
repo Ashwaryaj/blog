@@ -11,8 +11,8 @@ use App\Comment;
 
 class CommentsController extends Controller
 {	//Create a comment
-    public function store(Post $post){
-    	
+    public function store($slug){
+        $post = Post::where('slug', $slug)->firstOrFail();
     	$this->validate(request(), ['body' => 'required|min:3']);
 		$post->addComment(request('body'));
 		return back()->with('alert', 'Comment added');

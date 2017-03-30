@@ -4,7 +4,7 @@
 	<div class="col-sm-8 blog-main">
 		<h1> Edit your post </h1>
 		<hr>
-		<form method="POST"  action="/posts/{{$post->id}}">
+		<form method="POST"  action="/posts/{{$post->slug}}">
 		  {{ method_field('PATCH') }}
 		  {{csrf_field()}}
 		  <input name="_method" type="hidden" value="PATCH">

@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailer;
 use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Str;
 
 use Mail;
 use Illuminate\Support\Facades\Input;
@@ -44,8 +44,9 @@ class User extends Authenticatable
     } 
     //User publishes a post
     public function publish(Post $post){
-
-        $this->posts()->save($post);
+        $post->slug=Str::slug(request()->title);
+        $id=$post->id;
+        $this->posts()->save($post);  
     } 
 
 /**

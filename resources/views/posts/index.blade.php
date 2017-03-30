@@ -10,18 +10,18 @@ use Illuminate\Support\Facades\Input;
 			@foreach ($posts as $post)
 			  	@include('posts.post')
 			  	@if (Auth::check())
-			  		<form  method="POST" action="/posts/{{$post->id}}" class="has-confirm" data-message="Delete this post?">
+			  		<form  method="POST" action="/posts/{{$post->slug}}" class="has-confirm" data-message="Delete this post?">
 			  			{{method_field('DELETE')}} 
 			  			{{csrf_field()}}
 			  			@if($post->user_id==Auth::id())
-				  			<a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Edit Post</a>
+				  			<a href="{{ route('posts.edit', $post->slug) }}" class="btn btn-primary">Edit Post</a>
 							<button type="submit" class="btn btn-danger">Delete</button>
 						@endif
 					</form>  	
 			  	@endif
 			  	<hr>
 		 	@endforeach
-		 	<div class="pager"> {{ $posts->render() }} </div>
+		 	<div class="pager"> {{ $posts->links() }} </div>
 		</div><!-- /.blog-main -->
 		<div>
 			@include('layouts.sidebar')

@@ -12,7 +12,8 @@ use App\User;
 
 
 class LoginController extends Controller
-{
+{   
+    protected $redirectPath = '/';
     /*
     |--------------------------------------------------------------------------
     | Login Controller
