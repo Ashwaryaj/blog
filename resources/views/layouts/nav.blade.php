@@ -3,7 +3,7 @@
   <div class="container">
     <nav class="blog-nav">
       @if (Auth::check())
-      	<a class="blog-nav-item" href="/">Hi {{Auth::user()->name}}</a>
+      	<a class="blog-nav-item" href="/">Hi {{ Auth::user()->name }}</a>
         <a class="blog-nav-item" href="/posts/create">Create Post</a>
         <a class="blog-nav-item pull-right" href="/logout">Logout</a>
       @else

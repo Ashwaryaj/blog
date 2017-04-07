@@ -18,6 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>   
       <!-- Custom styles for this template -->
     <link href="/css/album.css" rel="stylesheet">
+      <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css" rel="stylesheet">
 
   </head>
 
@@ -43,5 +44,8 @@
     @include('layouts.footer')
     <script type="text/javascript" src="/js/ConfirmDelete.js">  </script>
     <script type="text/javascript" src="/js/AddTags.js">  </script>
+    <script type="text/javascript" src="/js/ConfigSummerNote.js"></script>
+    <script type="text/javascript" src="/js/summernote.min.js"></script>
+    <script type="text/javascript" src="/js/AddTags.js"></script>
   </body>
 </html>

@@ -3,19 +3,12 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 use App\Post;
 use Illuminate\Mail\Mailer;
-use App\Http\Requests;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
-
 use Mail;
-use Illuminate\Support\Facades\Input;
-
 
 class User extends Authenticatable
 {
@@ -38,35 +31,63 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    //A  user can have many posts
-    public function posts(){
+    /**
+     * One to many relationship between user and posts
+     */
+    public function posts()
+    {
+        //A  user can have many posts
         return $this->hasMany(Post::class);
-    } 
-    //User publishes a post
-    public function publish(Post $post){
+    }
+    /**
+     * User can publish a post or save in drafts
+     *
+     * @param Post $post Post object
+     */
+    public function publish(Post $post)
+    {
+        //User publishes a post
         $post->slug=Str::slug(request()->title);
         $id=$post->id;
-        $this->posts()->save($post);  
-    } 
+        $this->posts()->save($post);
+    }
 
-/**
-*
-* Send a verification email with link
-*
-* @return void
-*/
+    /**
+    * Send a verification email with link
+    *
+    * @return void
+    */
     public function sendVerificationEmail()
     {
-      
-    //optionally check if the user has a verification code here
-     
-       Mail::send('mail.verify',
-         ['confirmation_code' => $this->confirmation_code],
-         function ($message) {
-             $message->to($this->email)
-               ->subject('Please verify your email');
-             return true;
-         });
-     
+
+        //optionally check if the user has a verification code here
+        Mail::send(
+            'mail.verify',
+            ['confirmation_code' => $this->confirmation_code],
+            function ($message) {
+                $message->to($this->email)
+                    ->subject('Please verify your email');
+                return true;
+            }
+        );
+    }
+    /**
+     * Send acknowlegement mail to user
+     *
+     * @return boolean true
+     */
+    public function sendConfirmationEmail()
+    {
+
+        //Send the user a mail that he is verified
+        Mail::send(
+            'mail.confirmation',
+            [],
+            function ($message) {
+                $message->to($this->email)
+                    ->subject('Thank You');
+                return true;
+            }
+        );
     }
 }

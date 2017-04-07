@@ -6,8 +6,6 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 
 class RegisterController extends Controller
 {
@@ -44,29 +42,33 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
+        return Validator::make(
+            $data,
+            [ 'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-        ]);
+            ]
+        );
     }
 
-     
+    //Create a user and send verification mail
     protected function create(array $data)
     {
-        return User::create([
+        $user=User::create(
+            [
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'confirmation_code' => str_random(30)
-        ]);
+            ]
+        );
+        $user->sendVerificationEmail();
+        redirect('/')->with('message', 'Check your email to verify yourself.');
+        return $user;
     }
-
- 
-    
 }

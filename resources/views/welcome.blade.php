@@ -87,7 +87,7 @@
  -->                    <a href="https://laracasts.com">Laracasts>    </a>
                      @foreach ($tasks as $task)
 
-                    <li> {{$task->body }}  </li>
+                    <li> {{ $task->body }}  </li>
                 @endforeach
                     <a href="https://laravel-news.com">News</a>
                     <a href="https://forge.laravel.com">Forge</a>

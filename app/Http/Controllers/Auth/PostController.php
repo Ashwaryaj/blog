@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Post;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use DB;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
-use App\Post;
-use Illuminate\Support\Facades\Session;
-use App\User;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
-use DB;
 
-
-class HomeController extends Controller
+class PostController extends Controller
 {
     public function __construct()
     {
@@ -30,46 +28,62 @@ class HomeController extends Controller
     //Render posts
     public function index()
     {
-        $posts=Post::where('status','published')
-            ->filter(request(['month','year']))
-            ->latest()
-            ->paginate(10);
+        if (Auth::check()) {
+            $posts=Post::where('status', 'published')
+                ->orWhere('status', 'draft')
+                ->filter(request(['month','year']))
+                ->latest()
+                ->paginate(2);
+        } else {
+            $posts=Post::where('status', 'published')
+                ->filter(request(['month','year']))
+                ->latest()
+                ->paginate(2);
+        }
+
 
         $archives=Post::archives();
-        return view('posts.index',compact('posts'));
+        return view('posts.index', compact('posts'));
     }
     //Display a post
     public function show($slug)
-    {   
+    {
         $post = Post::where('slug', $slug)->firstOrFail();
-        return view('posts.show',compact('post'));
+        return view('posts.show', compact('post'));
     }
     //Store post in database
     public function store(Request $request)
-    {   
-        $this->validate($request,[
-            'title'=> 'required',
-            'body'=>'required'
-        ]);
+    {
+        $this->validate(
+            $request,
+            ['title'=> 'required',
+            'body'=>'required',
+            'tags'=>'required'
+            ]
+        );
 
+        //Publish a post
         auth()->user()->publish(
-            new Post($request->except('tags','hidden-tags'))
-        );  
+            new Post($request->except('tags', 'hidden-tags', 'files'))
+        );
+        //To save tags to database
         $id=DB::table('posts')->orderBy('id', 'desc')->first()->id;
-        app('App\Http\Controllers\Auth\TagsController')->saveTags($request,$id);
-        return redirect('/')->with('alert',"Post created successfully.");
+        app('App\Http\Controllers\TagsController')->save($request, $id);
+        return redirect('/')->with('alert', "Post created successfully.");
     }
 
-    public function edit($slug){
+    public function edit($slug)
+    {
         // get the post
         $post = Post::where('slug', $slug)->firstOrFail();
         // show the edit form and pass the post
         return View::make('posts.edit')
-            ->with('post', $post);        
+            ->with('post', $post);
     }
 
-    public function update($slug){
-        
+    //Update a post
+    public function update($slug)
+    {
         // validate
         $rules = array(
             'title'       => 'required',
@@ -97,7 +111,9 @@ class HomeController extends Controller
         }
     }
 
-    public function destroy($slug){
+    //Function to delete a postp
+    public function destroy($slug)
+    {
         // delete
         $post = Post::where('slug', $slug)->firstOrFail();
         $post->delete();

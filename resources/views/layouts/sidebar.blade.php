@@ -8,7 +8,7 @@
   <div class="sidebar-module">
     <h4>Archives</h4>
     <ol class="list-unstyled">
-     @foreach($archives as $stats)
+     @foreach ($archives as $stats)
       <li>
         <a href="/?month={{$stats['month'] }}&year={{ $stats['year'] }}">
           {{ $stats['month']. ' ' . $stats['year']}}
@@ -19,7 +19,7 @@
   <div class="sidebar-module">
     <h4>Tags</h4>
     <ol class="list-unstyled">
-     @foreach($tags as $tag)
+     @foreach ($tags as $tag)
       <li>
         <a href="/posts/tags/{{ $tag }}">
          {{ $tag  }}

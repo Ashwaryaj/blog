@@ -1,21 +1,21 @@
 <?php
-Route::get('/tags', 'Auth\TagsController@autocompleteTags');
+Route::get('/tags', 'TagsController@autoComplete');
 Route::get('/logout','Auth\LoginController@destroy');
-Route::get('/posts/tags/{tag}','Auth\TagsController@index');
-Auth::routes();
-Route::post('/posts/{slug}/comments','Auth\CommentsController@store');
-Route::get('/', 'Auth\HomeController@index');
+Route::get('/posts/tags/{tag}','TagsController@index');
+Route::get('/', 'Auth\PostController@index');
 //allow authenticated AND verified users only to shop on website
 Route::group(['middleware' => 'verified'], function () {
-    Route::resource('posts','Auth\HomeController', ['except' => [
+    Route::resource('posts','Auth\PostController', ['except' => [
     'show'
 	]]);
+Route::post('/posts/{slug}/comments','CommentsController@store');
 });
+Auth::routes();
 //denied verification route
 Route::get('verifyemail', function(){
-   return "Please check your email to verify your email address and start blogging";
+   return View::make('errors.NotVerified');
 	
 });
 //Handle verification
 Route::get('user/verify/{verificationCode}' ,'Auth\LoginController@verifyEmail');
-Route::get('/posts/{slug}','Auth\HomeController@show');
+Route::get('/posts/{slug}','Auth\PostController@show');

@@ -2,12 +2,13 @@
 <div class="blog-post">
     <h2 class="blog-post-title">
     	<a href="/posts/{{$post->slug}}">
-    		{{$post->title}}
+    		{{ $post->title }}
     	</a>
     </h2>
+    @include('posts.tag')
     <p class="blog-post-meta">
-    	{{$post->user->name}} on
-    	{{$post->created_at->toFormattedDateString()}} 
+    	{{ $post->user->name }} on
+    	{{ $post->created_at->toFormattedDateString() }}
     </p>
-    {{$post->body}}
+    {!!$post->body!!}
 </div>

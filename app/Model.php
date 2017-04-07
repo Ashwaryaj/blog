@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Model extends Eloquent
 {
+    /** @var array Field empty */
     protected $guarded=[];
 }

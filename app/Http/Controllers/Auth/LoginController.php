@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
 use Illuminate\Http\Request;
-
 use App\User;
 
-
+/**
+ * Controller for managing login
+ */
 class LoginController extends Controller
-{   
+{
+
     protected $redirectPath = '/';
     /*
-    |--------------------------------------------------------------------------
+    |-----------------------------------------------------y---------------------
     | Login Controller
     |--------------------------------------------------------------------------
     |
@@ -39,59 +39,72 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct(){
+    public function __construct()
+    {
 
-        $this->middleware('guest',['except'=>'destroy']);
+        $this->middleware('guest', ['except'=>'destroy']);
     }
-    //Create login form
-    public function create(){
 
-        return view('sessions.create'); 
+    public function create()
+    {
+        //Create login form
+        return view('sessions.create');
     }
-    //Logout functionality
-    public function destroy(){
 
+    public function destroy()
+    {
+        //Logout functionality
         auth()->logout();
         return redirect('/');
     }
-    //Authenticate login
-    public function store(){
+    /**
+     * Attempt to login
+     *
+     * @return Response Home Page
+     */
+    public function store()
+    {
         //attempt to authenticate the user
-        if(!auth()->attempt(request(['email','password']))){
-            return back()->withErrors([
+        if (!auth()->attempt(request(['email','password']))) {
+            return back()->withErrors(
+                [
                 'message'=>'Please check your credentials and try again'
-            ]);
+                ]
+            );
         }
         return redirect('/');
     }
 
-    
- 
+    /**
+     * Verify the user
+     *
+     * @param  Request $request          Receives token
+     * @param  string  $verificationCode Receives 30 char random token
+     * @return Response                    Home page with or without message
+     */
     public function verifyEmail(Request $request, $verificationCode)
     {
-        
-
-       //check if verificationCode exists
-       if (!$valid = User::where('confirmation_code', $verificationCode)->first()) {
-        
-           return redirect('/')->withErrors(["That verification code does not exist, try again"]);
-       }
-     
-       $conditions = [
+        $conditions = [
          'verified' => 0,
          'confirmation_code' => $verificationCode
-       ];
-     
-       if ($valid = User::where($conditions)->first()) {
-         
-        $valid->verified = 1;
-        $valid->save();
-     
-        return redirect('/')
-             ->withInput(['email' => $valid->email]);
-       }
-     
-       return redirect('/')->with('message',"Your account is already verified");
+        ];
+        $valid = User::where($conditions)->first();
+        //check if verificationCode exists
+        if (!$valid) {
+            return redirect('/')->withErrors(
+                ["That verification code
+            does exist, try again"]
+            );
+        }
+
+        if ($valid) {
+            $valid->verified = 1;
+            $valid->save();
+            $valid->sendConfirmationEmail();
+            return redirect('/')
+             ->with('message', "Your account is verified");
+        }
+
+        return redirect('/')->with('message', "Your account is already verified");
     }
- 
 }
