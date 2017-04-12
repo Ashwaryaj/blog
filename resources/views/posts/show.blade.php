@@ -17,9 +17,9 @@ use App\User;
                             {{ $comment->created_at->diffForHumans() }}
                         </strong>
                         by
-        <?php
-        $user=User::select('name')->where('id', $comment->user_id)->first();
-        ?>
+                        <?php
+                        $user=User::select('name')->where('id', $comment->user_id)->first();
+                        ?>
                         <i>
                             {{ $user['name'] }}
                         </i>

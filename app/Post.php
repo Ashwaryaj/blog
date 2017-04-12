@@ -79,4 +79,37 @@ class Post extends Model
          ->get()
          ->toArray();
     }
+    /**
+     * @param $title
+     * @param int   $id
+     * @return string
+     * @throws \Exception
+     */
+    public function createSlug($title, $id = 0)
+    {
+        // Normalize the title
+        $slug = str_slug($title);
+        // Get any that could possibly be related.
+        // This cuts the queries down by doing it once.
+        $allSlugs = $this->getRelatedSlugs($slug, $id);
+
+        if (count($allSlugs)) {
+            return $slug . "-" . count($allSlugs);
+        }
+
+        return $slug;
+    }
+    /**
+     * Fetch similar slugs
+     *
+     * @param  String  $slug Accept the slug corresponding to post
+     * @param  integer $id   id of the post
+     * @return Post object        Returns related slug obk=ject
+     */
+    protected function getRelatedSlugs($slug, $id = 0)
+    {
+        return Post::select('slug')->where('slug', 'like', $slug.'%')
+            ->where('id', '<>', $id)
+            ->get();
+    }
 }

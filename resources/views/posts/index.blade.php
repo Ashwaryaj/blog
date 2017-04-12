@@ -13,6 +13,17 @@
 			  			@if($post->user_id==Auth::id())
 				  			<a href="{{ route('posts.edit', $post->slug) }}" class="btn btn-primary">Edit Post</a>
 							<button type="submit" class="btn btn-danger">Delete</button>
+							<div class="social-buttons">
+							    <a href="/facebookshare/{{ $post->title }}" target="_blank">
+							       <i class="fa fa-facebook-official"></i>
+							    </a>
+								<a href="/twittershare/{{ $post->title }}" target="_blank" id="twitter">
+							        <i class="fa fa-twitter-square"></i>
+							    </a>
+							    <a href="/gplusshare/{{ $post->title }}" target="_blank" id="gplus">
+							       <i class="fa fa-google-plus-square"></i>
+							    </a>
+							</div>
 						@endif
 					</form>
 			  	@endif

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
 use App\User;
 
 /**
@@ -44,13 +43,19 @@ class LoginController extends Controller
 
         $this->middleware('guest', ['except'=>'destroy']);
     }
-
+    /**
+     * Creating login screen
+     * @return Response Sessions.create view
+     */
     public function create()
     {
         //Create login form
         return view('sessions.create');
     }
-
+    /**
+     * Logout for an authenticated user
+     * @return Response Redirect to home page
+     */
     public function destroy()
     {
         //Logout functionality
@@ -73,38 +78,5 @@ class LoginController extends Controller
             );
         }
         return redirect('/');
-    }
-
-    /**
-     * Verify the user
-     *
-     * @param  Request $request          Receives token
-     * @param  string  $verificationCode Receives 30 char random token
-     * @return Response                    Home page with or without message
-     */
-    public function verifyEmail(Request $request, $verificationCode)
-    {
-        $conditions = [
-         'verified' => 0,
-         'confirmation_code' => $verificationCode
-        ];
-        $valid = User::where($conditions)->first();
-        //check if verificationCode exists
-        if (!$valid) {
-            return redirect('/')->withErrors(
-                ["That verification code
-            does exist, try again"]
-            );
-        }
-
-        if ($valid) {
-            $valid->verified = 1;
-            $valid->save();
-            $valid->sendConfirmationEmail();
-            return redirect('/')
-             ->with('message', "Your account is verified");
-        }
-
-        return redirect('/')->with('message', "Your account is already verified");
     }
 }

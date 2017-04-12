@@ -52,20 +52,24 @@ class TagsController extends Controller
     {
         //Saving tags in tags table and pivot table
         $post=$request->toArray();
-        $tags=explode(',', $post["hidden-tags"]);
-        foreach ($tags as $tag) {
-            $t = Tag::where('name', $tag)->first();
-            if (is_null($t)) {
-                //Insert into database
-                $temp = new Tag;
-                $temp->name =$tag;
-                $temp->save();
-            } else {
-                $temp= Tag::where('name', $tag)->first();
+
+        if (!empty($post['hidden-tags'])) {
+            $tags=explode(',', $post["hidden-tags"]);
+
+            foreach ($tags as $tag) {
+                $t = Tag::where('name', $tag)->first();
+                if (is_null($t)) {
+                    //Insert into database
+                    $temp = new Tag;
+                    $temp->name =$tag;
+                    $temp->save();
+                } else {
+                    $temp= Tag::where('name', $tag)->first();
             }
 
             $post = Post::where('id', $post_id)->firstOrFail();
             $post->tags()->attach($temp->id);
+        }
         }
     }
 }

@@ -47,9 +47,10 @@ class User extends Authenticatable
     public function publish(Post $post)
     {
         //User publishes a post
-        $post->slug=Str::slug(request()->title);
         $id=$post->id;
+        $post->slug= $post->createSlug(request()->title, $id);
         $this->posts()->save($post);
+        return $post;
     }
 
     /**
