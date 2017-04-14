@@ -75,7 +75,7 @@ class RegisterController extends Controller
                 ]
             );
         } catch (\Exception $e) {
-            return redirect();
+            return redirect('');
         }
         $user->sendVerificationEmail();
         redirect('/')->with('message', 'Check your email to verify yourself.');

@@ -1,4 +1,22 @@
-.social-buttons {
+.like, .unlike {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    font-size: 1em;
+    line-height: 1.428571429;
+    border-radius: 4px;
+}
+.qty1, .qty2 {
+    border: none;
+    width:20px;
+    background: transparent;
+}
+.social-buttons{
   font-size: 1.5em;
 }
 #twitter {

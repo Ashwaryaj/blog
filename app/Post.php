@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use \Conner\Likeable\Likeable;
 
 /**
  * This is a post model
@@ -111,5 +112,15 @@ class Post extends Model
         return Post::select('slug')->where('slug', 'like', $slug.'%')
             ->where('id', '<>', $id)
             ->get();
+    }
+    public function likes()
+    {
+        return $this->morphToMany('App\User', 'likeable')->whereDeletedAt(null);
+    }
+
+    public function getIsLikedAttribute()
+    {
+        $like = $this->likes()->whereUserId(Auth::id())->first();
+        return (!is_null($like)) ? true : false;
     }
 }

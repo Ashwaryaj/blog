@@ -175,4 +175,14 @@ class PostController extends Controller
         Session::flash('message', 'Successfully deleted the post!');
         return Redirect::to('/');
     }
+    public function likes()
+    {
+        return $this->morphToMany('App\User', 'likeable')->whereDeletedAt(null);
+    }
+
+    public function getIsLikedAttribute()
+    {
+        $like = $this->likes()->whereUserId(Auth::id())->first();
+        return (!is_null($like)) ? true : false;
+    }
 }

@@ -13,6 +13,7 @@ class LoginController extends Controller
 {
 
     protected $redirectPath = '/';
+    protected $redirectTo = '/';
     /*
     |-----------------------------------------------------y---------------------
     | Login Controller
@@ -45,6 +46,7 @@ class LoginController extends Controller
     }
     /**
      * Creating login screen
+     *
      * @return Response Sessions.create view
      */
     public function create()
@@ -54,6 +56,7 @@ class LoginController extends Controller
     }
     /**
      * Logout for an authenticated user
+     *
      * @return Response Redirect to home page
      */
     public function destroy()

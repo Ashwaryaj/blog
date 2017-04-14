@@ -49,3 +49,5 @@ Route::get(
         return redirect($link);
     }
 );
+Route::get('post/like/{id}', ['as' => 'post.like', 'uses' => 'LikeController@likePost']);
+Route::get('post/like/{id}/delete', ['as' => 'post.deleteLike', 'uses' => 'LikeController@deleteLike']);
